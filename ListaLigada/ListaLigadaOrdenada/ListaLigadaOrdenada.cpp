@@ -17,7 +17,6 @@ void exibirElementos();
 void inserirElemento();
 void excluirElemento();
 void buscarElemento();
-NO* posicaoElemento(int numero);
 //--------------------------
 
 
@@ -70,7 +69,7 @@ void menu()
 
 void inicializar()
 {
-	// se a lista já possuir elementos
+	// se a lista jÃ¡ possuir elementos
 // libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -128,26 +127,91 @@ void inserirElemento()
 	if (primeiro == NULL)
 	{
 		primeiro = novo;
-	}
-	else
-	{
-		// procura o final da lista
+	} 
+	else {
+		NO* ant = NULL;
 		NO* aux = primeiro;
-		while (aux->prox != NULL) {
+
+		while (aux != NULL) {
+			if (aux->valor < novo->valor) {
+				ant = aux;
+			}
+			else {
+				break;
+			}
 			aux = aux->prox;
 		}
-		aux->prox = novo;
+		if (ant == NULL) {
+			novo->prox = primeiro;
+			primeiro = novo;
+		}
+		else {
+			ant->prox = novo;
+			novo->prox = aux;
+		}
 	}
 }
 
 void excluirElemento()
 {
-
+	int excluir;
+	cout << "Digite o elemento para excluir: ";
+	cin >> excluir;
+	NO* ant = NULL;
+	NO* paraExcluir = NULL;
+	if (primeiro == NULL) {
+		cout << "Lista vazia" << endl;
+	}
+	else {
+		if (excluir == primeiro->valor) {
+			ant = primeiro;
+			primeiro = primeiro->prox;
+			free(ant);
+		}
+		else {
+			NO* aux = primeiro;
+			while (aux != NULL) {
+				if (aux->valor != excluir) {
+					ant = aux;
+				}
+				else {
+					break;
+				}
+				aux = aux->prox;
+			}
+			if (aux == NULL) {
+				cout << "Elemento nao existe na lista" << endl;
+			}
+			else {
+				paraExcluir = aux;
+				aux = aux->prox;
+				ant->prox = aux;
+				free(paraExcluir);
+			}
+		}
+	}
 }
 
 void buscarElemento()
 {
-
+	int buscar;
+	int ctrl = 0;
+	cout << "Digite o elemento que deseja buscar: ";
+	cin >> buscar;
+	NO* aux = primeiro;
+	if (primeiro == NULL) {
+		cout << "Lista vazia" << endl;
+		return;
+	}
+	while (aux != NULL) {
+		if (aux->valor == buscar) {
+			cout << "Numero encontrado" << endl;
+			ctrl = 1;
+			break;
+		}
+		aux = aux->prox;
+	}
+	if (ctrl == 0) {
+		cout << "Numero nao encontrado" << endl;
+	}
 }
-
-
